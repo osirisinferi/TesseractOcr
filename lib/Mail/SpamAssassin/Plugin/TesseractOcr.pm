@@ -373,57 +373,57 @@ sub tesseract_do {
             Mail::SpamAssassin::PerMsgStatus::enter_helper_run_mode($self);
             my $timer = Mail::SpamAssassin::Timeout->new( { secs => $self->{main}->{conf}->{tocr_img_timeout} } );
             # Convert to TIF, if not already
-            unless ($ext =~ 'tif') {
-                # CONVERT
-                my $out = "$fullpath.tif";
-                $tmpfile .= ".tif";
+            #unless ($ext =~ 'tif') {
+            #    # CONVERT
+            #    my $out = "$fullpath.tif";
+            #    $tmpfile .= ".tif";
 
-                dbg("TesseractOcr: Converting $fullpath to $out");
-                my @args = ( $fullpath, '-compress','none','+matte', $out );
+            #    dbg("TesseractOcr: Converting $fullpath to $out");
+            #    my @args = ( $fullpath, '-compress','none','+matte', $out );
 
-                Mail::SpamAssassin::PerMsgStatus::enter_helper_run_mode();
-                my $pid;
-                my ($line,$inbuf);
-                my $err = $timer->run_and_catch(sub {
-                    $pid = Mail::SpamAssassin::Util::helper_app_pipe_open(*CONVERT, undef, 1, $CONVERT, @args);
-                    if (!defined $pid) {
-                        return "Failed to open pipe for convert command";
-                    } else {
-                        while ($line = read(CONVERT,$inbuf,8192)) {
-                            dbg("TesseractOcr: CONVERT DEBUG $line");
-                        }
-                        unless (defined $line) {
-                            return "TesseractOcr: Error reading from pipe: $!";
-                        }
+            #    Mail::SpamAssassin::PerMsgStatus::enter_helper_run_mode();
+            #    my $pid;
+            #    my ($line,$inbuf);
+            #    my $err = $timer->run_and_catch(sub {
+            #        $pid = Mail::SpamAssassin::Util::helper_app_pipe_open(*CONVERT, undef, 1, $CONVERT, @args);
+            #        if (!defined $pid) {
+            #            return "Failed to open pipe for convert command";
+            #        } else {
+            #            while ($line = read(CONVERT,$inbuf,8192)) {
+            #                dbg("TesseractOcr: CONVERT DEBUG $line");
+            #            }
+            #            unless (defined $line) {
+            #                return "TesseractOcr: Error reading from pipe: $!";
+            #            }
 
-                        my $errno = 0;
-                        close CONVERT or $errno = $!;
-                        if (Mail::SpamAssassin::Util::proc_status_ok($?,$errno)) {
-                            dbg("TesseractOcr: convert pid $pid finished successfully.");
-                            return 1;
-                        } elsif (Mail::SpamAssassin::Util::proc_status_ok($?,$errno,0,1)) {
-                            dbg("TesseractOcr: convert pid $pid finished: " . Mail::SpamAssassin::Util::exit_status_str($?,$errno));
-                            return 1;
-                        } else {
-                            dbg("TesseractOcr: convert pid $pid failed: " . Mail::SpamAssassin::Util::exit_status_str($?,$errno));
-                            return 0;
-                        }
-                    }
-                });
-                Mail::SpamAssassin::PerMsgStatus::leave_helper_run_mode($self);
+            #            my $errno = 0;
+            #            close CONVERT or $errno = $!;
+            #            if (Mail::SpamAssassin::Util::proc_status_ok($?,$errno)) {
+            #                dbg("TesseractOcr: convert pid $pid finished successfully.");
+            #                return 1;
+            #            } elsif (Mail::SpamAssassin::Util::proc_status_ok($?,$errno,0,1)) {
+            #                dbg("TesseractOcr: convert pid $pid finished: " . Mail::SpamAssassin::Util::exit_status_str($?,$errno));
+            #                return 1;
+            #            } else {
+            #                dbg("TesseractOcr: convert pid $pid failed: " . Mail::SpamAssassin::Util::exit_status_str($?,$errno));
+            #                return 0;
+            #            }
+            #        }
+            #    });
+            #    Mail::SpamAssassin::PerMsgStatus::leave_helper_run_mode($self);
 
-                if ($err) {
-                    dbg("TessoractOcr: Failed to convert $fullpath: $_");
-                    dbg("TessoractOcr: Removing unconverted file $fullpath");
-                    unlink $fullpath or dbg("TesseractOcr: Failed to remove $fullpath after failed conversion: $!");
-                    next;
-                } else {
-                    dbg("TessoractOcr: Successfully converted $fullpath to $out");
-                    dbg("TessoractOcr: Removing unconverted file $fullpath");
-                    unlink $fullpath or dbg("TesseractOcr: Failed to remove $fullpath after conversion: $!");
-                    $fullpath = $out;
-                }
-            }
+            #    if ($err) {
+            #        dbg("TessoractOcr: Failed to convert $fullpath: $_");
+            #        dbg("TessoractOcr: Removing unconverted file $fullpath");
+            #        unlink $fullpath or dbg("TesseractOcr: Failed to remove $fullpath after failed conversion: $!");
+            #        next;
+            #    } else {
+            #        dbg("TessoractOcr: Successfully converted $fullpath to $out");
+            #        dbg("TessoractOcr: Removing unconverted file $fullpath");
+            #        unlink $fullpath or dbg("TesseractOcr: Failed to remove $fullpath after conversion: $!");
+            #        $fullpath = $out;
+            #    }
+            #}
 
             # Scan TIF and render results
             # SCAN
