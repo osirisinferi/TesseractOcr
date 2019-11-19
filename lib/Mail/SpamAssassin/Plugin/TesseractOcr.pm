@@ -86,7 +86,7 @@ our ($tmpfile, $tmpdir);
 
 # Verify non-perl dependencies
 our $TESSERACT = Mail::SpamAssassin::Util::find_executable_in_env_path('tesseract') or die "Could not find 'tesseract' executable. You may need to install this package.\n";
-our $CONVERT = Mail::SpamAssassin::Util::find_executable_in_env_path('convert') or die "Could not find 'convert' executable. You may need to install this package.\n";
+#our $CONVERT = Mail::SpamAssassin::Util::find_executable_in_env_path('convert') or die "Could not find 'convert' executable. You may need to install this package.\n";
 
 sub new {
     my $class = shift;
