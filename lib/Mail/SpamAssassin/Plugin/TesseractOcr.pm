@@ -428,7 +428,7 @@ sub tesseract_do {
             # Scan TIF and render results
             # SCAN
             my ($pid, $content);
-            my @args = ( $fullpath, 'stdout' );
+            my @args = ( $fullpath, 'stdout', 'quiet' );
             my $err = $timer->run_and_catch(sub {
                 my ($inbuf, $line);
                 $content = '';
