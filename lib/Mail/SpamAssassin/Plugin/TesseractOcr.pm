@@ -93,7 +93,7 @@ sub new {
     my $mailsa = shift;
 
     my $date = strftime "%Y-%m-%d %H:%M", localtime;
-    dbg("TessaractOcr: Initiated Plugin $date");
+    dbg("TesseractOcr: Initiated Plugin $date");
 
     $class = ref($class) || $class;
     my $self = $class->SUPER::new($mailsa);
